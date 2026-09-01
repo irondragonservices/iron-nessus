@@ -1,0 +1,24 @@
+# Lint only, and deliberately no build, no publish and no scheduled refresh.
+#
+# This image cannot be built without a Nessus activation code, and the result
+# must not be published — see the README. The rest of the fleet calls into
+# irondragonservices/.github; this repository cannot, because every one of
+# those workflows ends in a push to GHCR.
+name: pull request
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          failure-threshold: warning
